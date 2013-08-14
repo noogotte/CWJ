@@ -98,6 +98,6 @@ public final class Server implements ProtocolHandler {
     }
 
     public Path getFolder() {
-        return FileSystems.getDefault().getPath(".");
+        return FileSystems.getDefault().getPath("");
     }
 }
