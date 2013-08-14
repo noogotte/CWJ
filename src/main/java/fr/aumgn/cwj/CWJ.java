@@ -28,6 +28,7 @@ public class CWJ {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        logger.info("Starting CWJ");
         EventLoopGroup bossGroup = new NioEventLoopGroup();
         EventLoopGroup workerGroup = new NioEventLoopGroup();
 
@@ -38,6 +39,9 @@ public class CWJ {
             bootstrap.childHandler(new Driver(server));
             bootstrap.option(ChannelOption.SO_BACKLOG, 128);
             bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
+
+            logger.info("Base folder : \"" + server.getFolder().toAbsolutePath() + "\"");
+            server.loadPlugins();
 
             logger.info("Starting server on port " + server.getPort());
             ChannelFuture channelFuture = bootstrap.bind(server.getPort()).sync();

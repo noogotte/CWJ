@@ -1,8 +1,10 @@
 package fr.aumgn.cwj.protocol;
 
+import fr.aumgn.cwj.protocol.Packet.ServerPacket;
+
 public interface Client {
 
     long getEntityId();
 
-    void sendPacket(Packet.ServerPacket... packets);
+    void sendPacket(ServerPacket... packets);
 }

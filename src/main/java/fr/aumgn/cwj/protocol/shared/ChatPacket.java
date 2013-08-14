@@ -6,11 +6,11 @@ import io.netty.util.CharsetUtil;
 import java.nio.charset.Charset;
 
 import fr.aumgn.cwj.protocol.Client;
-import fr.aumgn.cwj.protocol.Packet;
-import fr.aumgn.cwj.protocol.ProtocolHandler;
+import fr.aumgn.cwj.protocol.Packet.SharedPacket;
 import fr.aumgn.cwj.protocol.PacketType;
+import fr.aumgn.cwj.protocol.ProtocolHandler;
 
-public class ChatPacket implements Packet.SharedPacket {
+public class ChatPacket implements SharedPacket {
 
     private static final Charset MESSAGE_CHARSET = CharsetUtil.UTF_16LE;
 

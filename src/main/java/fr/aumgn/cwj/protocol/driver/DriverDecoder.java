@@ -1,6 +1,6 @@
 package fr.aumgn.cwj.protocol.driver;
 
-import fr.aumgn.cwj.protocol.Packet;
+import fr.aumgn.cwj.protocol.Packet.ClientPacket;
 import fr.aumgn.cwj.protocol.PacketType;
 import fr.aumgn.cwj.protocol.exception.UnknownPacketException;
 import io.netty.buffer.ByteBuf;
@@ -22,7 +22,7 @@ public class DriverDecoder extends ReplayingDecoder<Object> {
             throw new UnknownPacketException(id);
         }
 
-        Packet.ClientPacket packet = type.read(buf);
+        ClientPacket packet = type.read(buf);
         packets.add(packet);
     }
 }

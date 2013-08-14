@@ -28,7 +28,7 @@ public class DriverHandler extends SimpleChannelInboundHandler<Packet.ClientPack
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext context, Packet.ClientPacket packet) throws Exception {
+    protected void channelRead0(ChannelHandlerContext context, ClientPacket packet) throws Exception {
         if (packet instanceof VersionPacket) {
             handleVersionPacket(context, (VersionPacket) packet);
         }

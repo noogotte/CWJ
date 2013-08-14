@@ -2,10 +2,13 @@ package fr.aumgn.cwj;
 
 import io.netty.channel.ChannelHandlerContext;
 
+import java.nio.file.FileSystems;
+import java.nio.file.Path;
 import java.util.SortedSet;
 
 import com.google.common.collect.Sets;
 
+import fr.aumgn.cwj.plugin.PluginManager;
 import fr.aumgn.cwj.protocol.Client;
 import fr.aumgn.cwj.protocol.ProtocolHandler;
 import fr.aumgn.cwj.protocol.exception.MismatchedClientVersionException;
@@ -23,6 +26,7 @@ public final class Server implements ProtocolHandler {
 
     private final int             port;
     private final int             seed;
+    private final PluginManager   pluginManager;
     private final SortedSet<Long> playerIds;
 
     /**
@@ -31,6 +35,7 @@ public final class Server implements ProtocolHandler {
     Server() {
         this.port = 12345;
         this.seed = 17;
+        this.pluginManager = new PluginManager(this.getFolder());
         this.playerIds = Sets.newTreeSet();
         for (long id = 1; id < 10; id++) {
             playerIds.add(id);
@@ -53,6 +58,10 @@ public final class Server implements ProtocolHandler {
 
     public int getSeed() {
         return seed;
+    }
+
+    void loadPlugins() {
+        pluginManager.load();
     }
 
     @Override
@@ -86,5 +95,9 @@ public final class Server implements ProtocolHandler {
 
     @Override
     public void received(Client client, EntityUpdatePacket entityUpdatePacket) {
+    }
+
+    public Path getFolder() {
+        return FileSystems.getDefault().getPath(".");
     }
 }

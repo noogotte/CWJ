@@ -8,19 +8,20 @@ import static fr.aumgn.cwj.protocol.PacketDataLength.INT64_VEC3;
 import static fr.aumgn.cwj.protocol.PacketDataLength.INT8;
 import static fr.aumgn.cwj.protocol.PacketDataLength.ITEM_DATA;
 import static fr.aumgn.cwj.protocol.PacketDataLength.VEC3;
+import io.netty.buffer.ByteBuf;
+import fr.aumgn.cwj.protocol.Packet.ClientPacket;
 import fr.aumgn.cwj.protocol.exception.NotImplementedPacketException;
 import fr.aumgn.cwj.protocol.exception.ServerOnlyPacketException;
 import fr.aumgn.cwj.protocol.shared.ChatPacket;
 import fr.aumgn.cwj.protocol.shared.EntityUpdatePacket;
 import fr.aumgn.cwj.protocol.shared.VersionPacket;
-import io.netty.buffer.ByteBuf;
 
 public enum PacketType {
 
     ENTITY_UPDATE {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return new EntityUpdatePacket(buf);
         }
     },
@@ -28,7 +29,7 @@ public enum PacketType {
     MULTIPLE_ENTITY_UPDATE {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -36,7 +37,7 @@ public enum PacketType {
     UPDATE_FINISHED {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -44,7 +45,7 @@ public enum PacketType {
     UNKNOWN3 {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -52,7 +53,7 @@ public enum PacketType {
     SERVER_UPDATE {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -60,7 +61,7 @@ public enum PacketType {
     CURRRENT_TIME {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -70,7 +71,7 @@ public enum PacketType {
         private static final int LENGTH = ITEM_DATA + 4 * INT32 + INT8 + INT16;
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return skipPacket(LENGTH, buf);
         }
     },
@@ -80,7 +81,7 @@ public enum PacketType {
         private static final int LENGTH = 2 * INT64 + FLOAT + INT8 + 3 + 2 * INT32 + INT64_VEC3 + VEC3 + 3 * INT8 + 1;
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return skipPacket(LENGTH, buf);
         }
     },
@@ -90,7 +91,7 @@ public enum PacketType {
         private static final int LENGTH = 40;
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return skipPacket(LENGTH, buf);
         }
     },
@@ -101,7 +102,7 @@ public enum PacketType {
                                                 + INT8 + 2 * INT32;
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return skipPacket(LENGTH, buf);
         }
     },
@@ -109,7 +110,7 @@ public enum PacketType {
     CHAT {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return new ChatPacket(buf);
         }
     },
@@ -119,7 +120,7 @@ public enum PacketType {
         private static final int LENGTH = 2 * INT32;
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return skipPacket(LENGTH, buf);
         }
     },
@@ -129,7 +130,7 @@ public enum PacketType {
         private static final int LENGTH = 2 * INT32;
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return skipPacket(LENGTH, buf);
         }
     },
@@ -137,7 +138,7 @@ public enum PacketType {
     UNUSED13 {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return notImplementedPacket();
         }
     },
@@ -145,7 +146,7 @@ public enum PacketType {
     UNUSED14 {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return notImplementedPacket();
         }
     },
@@ -153,7 +154,7 @@ public enum PacketType {
     SEED_DATA {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -161,7 +162,7 @@ public enum PacketType {
     JOIN {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -177,7 +178,7 @@ public enum PacketType {
     SERVER_FULL {
 
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return serverOnlyPacket();
         }
     },
@@ -189,7 +190,7 @@ public enum PacketType {
          * method must never be called.
          */
         @Override
-        public Packet.ClientPacket read(ByteBuf buf) {
+        public ClientPacket read(ByteBuf buf) {
             return notImplementedPacket();
         }
     };
@@ -201,18 +202,18 @@ public enum PacketType {
         return ordinal();
     }
 
-    public abstract Packet.ClientPacket read(ByteBuf buf);
+    public abstract ClientPacket read(ByteBuf buf);
 
-    protected Packet.ClientPacket skipPacket(int length, ByteBuf buf) {
+    protected ClientPacket skipPacket(int length, ByteBuf buf) {
         buf.skipBytes(length);
         return new NoopClientPacket(this);
     }
 
-    protected Packet.ClientPacket notImplementedPacket() {
+    protected ClientPacket notImplementedPacket() {
         throw new NotImplementedPacketException();
     }
 
-    protected Packet.ClientPacket serverOnlyPacket() {
+    protected ClientPacket serverOnlyPacket() {
         throw new ServerOnlyPacketException();
     }
 
@@ -225,7 +226,7 @@ public enum PacketType {
         return types[id];
     }
 
-    private static class NoopClientPacket implements Packet.ClientPacket {
+    private static class NoopClientPacket implements ClientPacket {
 
         private final PacketType type;
 

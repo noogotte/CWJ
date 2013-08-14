@@ -2,11 +2,11 @@ package fr.aumgn.cwj.protocol.shared;
 
 import io.netty.buffer.ByteBuf;
 import fr.aumgn.cwj.protocol.Client;
-import fr.aumgn.cwj.protocol.Packet;
+import fr.aumgn.cwj.protocol.Packet.SharedPacket;
 import fr.aumgn.cwj.protocol.PacketType;
 import fr.aumgn.cwj.protocol.ProtocolHandler;
 
-public class EntityUpdatePacket implements Packet.SharedPacket {
+public class EntityUpdatePacket implements SharedPacket {
 
     private final byte[] bytes;
 

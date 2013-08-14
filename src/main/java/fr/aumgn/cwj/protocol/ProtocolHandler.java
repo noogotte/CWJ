@@ -11,5 +11,4 @@ public interface ProtocolHandler {
     void disconnect(Client client);
 
     void received(Client client, EntityUpdatePacket entityUpdatePacket);
-
 }
