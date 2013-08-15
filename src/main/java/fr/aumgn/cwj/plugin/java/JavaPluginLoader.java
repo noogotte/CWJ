@@ -1,8 +1,8 @@
 package fr.aumgn.cwj.plugin.java;
 
 import java.io.IOException;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.nio.file.Files;
@@ -101,24 +101,26 @@ public class JavaPluginLoader implements PluginLoader {
         if (!JavaPlugin.class.isAssignableFrom(rawClass)) {
             throw new PluginLoaderException("Main class is not subclass of JavaPlugin");
         }
-        @SuppressWarnings("unchecked")
-        Class<? extends JavaPlugin> pluginClass = (Class<? extends JavaPlugin>) rawClass;
+        Class<? extends JavaPlugin> pluginClass = rawClass.asSubclass(JavaPlugin.class);
 
-        Constructor<? extends JavaPlugin> ctor;
+        JavaPlugin instance;
         try {
-            ctor = pluginClass.getConstructor(JavaPluginClassLoader.class, JavaPluginDescriptor.class);
+            instance = pluginClass.newInstance();
         }
-        catch (NoSuchMethodException | SecurityException exc) {
+        catch (SecurityException | InstantiationException | IllegalAccessException exc) {
             throw new PluginLoaderException("Cannot find suitable contructor for class" + pluginClass.getName()
                     + " in plugin " + pluginName(descriptor), exc);
         }
 
         try {
-            ctor.setAccessible(true);
-            JavaPlugin instance = ctor.newInstance(classLoader, descriptor);
+            Method method = JavaPlugin.class.getDeclaredMethod("initialize", JavaPluginClassLoader.class,
+                    JavaPluginDescriptor.class);
+            method.setAccessible(true);
+            method.invoke(instance, classLoader, descriptor);
             return instance;
         }
-        catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException exc) {
+        catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+                | SecurityException exc) {
             throw new PluginLoaderException("Cannot instantiate " + pluginClass.getName() + " in plugin "
                     + pluginName(descriptor), exc);
         }

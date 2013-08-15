@@ -4,10 +4,14 @@ import fr.aumgn.cwj.plugin.Plugin;
 
 public class JavaPlugin implements Plugin {
 
-    private final JavaPluginClassLoader classLoader;
-    private final JavaPluginDescriptor  descriptor;
+    private JavaPluginClassLoader classLoader;
+    private JavaPluginDescriptor  descriptor;
 
-    public JavaPlugin(JavaPluginClassLoader classLoader, JavaPluginDescriptor descriptor) {
+    public JavaPlugin() {
+    }
+
+    @SuppressWarnings("unused")
+    private void initialize(JavaPluginClassLoader classLoader, JavaPluginDescriptor descriptor) {
         this.classLoader = classLoader;
         this.descriptor = descriptor;
     }
