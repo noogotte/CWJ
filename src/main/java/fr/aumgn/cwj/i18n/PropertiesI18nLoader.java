@@ -14,7 +14,7 @@ public class PropertiesI18nLoader extends I18nLoader {
     }
 
     @Override
-    public Map<?, ?> loadRaw(Reader reader) {
+    public Map<?, ?> load(Reader reader) {
         Properties properties = new Properties();
         try {
             properties.load(reader);

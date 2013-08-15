@@ -3,13 +3,12 @@ package fr.aumgn.cwj.i18n;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 import java.text.MessageFormat;
-import java.util.Collections;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 import com.google.common.base.Preconditions;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * A set of messages loaded with {@link I18n} for a given {@link Locale}.
@@ -18,16 +17,12 @@ public class Localization {
 
     private final Map<String, MessageFormat> map;
 
-    public Localization(Map<String, MessageFormat> map) {
-        this.map = checkNotNull(map);
+    public Localization(ImmutableMap.Builder<String, MessageFormat> mapBuilder) {
+        this.map = checkNotNull(mapBuilder).build();
     }
 
     public boolean has(String key) {
         return map.containsKey(checkNotNull(key));
-    }
-
-    public String get(String key) {
-        return get(key, new Object[0]);
     }
 
     public String get(String key, Object... arguments) {
@@ -37,10 +32,6 @@ public class Localization {
         }
 
         return message;
-    }
-
-    public String get(String[] keys) {
-        return get(keys, new Object[0]);
     }
 
     public String get(String[] keys, Object... arguments) {
@@ -59,11 +50,8 @@ public class Localization {
         return "## Missing message for key \"" + key + "\" ##";
     }
 
-    public String rawGet(String key) {
-        return rawGet(key, new Object[0]);
-    }
-
-    public String rawGet(String key, Object... arguments) {
+    private String rawGet(String key, Object... arguments) {
+        checkNotNull(key);
         if (!map.containsKey(key)) {
             return null;
         }
@@ -73,10 +61,6 @@ public class Localization {
     }
 
     public Set<String> keys() {
-        return Collections.unmodifiableSet(map.keySet());
-    }
-
-    public Set<Entry<String, MessageFormat>> entries() {
-        return Collections.unmodifiableSet(map.entrySet());
+        return map.keySet();
     }
 }
