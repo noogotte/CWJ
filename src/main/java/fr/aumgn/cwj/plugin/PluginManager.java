@@ -30,12 +30,17 @@ public class PluginManager {
             CWJ.getLogger().info(" - " + pluginLoader.getClass().getName());
         }
 
+        if (!folder.toFile().exists()) {
+            CWJ.getLogger().log(Level.INFO, "Unable to access `plugins` directory, creating the directory");
+            folder.toFile().mkdir();
+        }
+
         DirectoryStream<Path> pluginPaths;
         try {
             pluginPaths = Files.newDirectoryStream(folder);
         }
         catch (IOException exc) {
-            CWJ.getLogger().log(Level.SEVERE, "Unable to acces `plugins` directory", exc);
+            CWJ.getLogger().log(Level.SEVERE, "Unable to access `plugins` directory", exc);
             return;
         }
 
