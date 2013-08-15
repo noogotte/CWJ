@@ -6,7 +6,7 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.Properties;
 
-public class PropertiesI18nLoader extends I18nLoader {
+public class PropertiesI18nLoader implements I18nLoader {
 
     @Override
     public String[] getExtensions() {
