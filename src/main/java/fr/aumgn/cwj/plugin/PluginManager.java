@@ -41,6 +41,10 @@ public class PluginManager {
 
         List<Plugin> plugins = Lists.newArrayList();
         for (Path path : pluginPaths) {
+            if (path.getFileName().toString().startsWith(".")) {
+                continue;
+            }
+
             try {
                 Plugin plugin = loadPlugin(path);
                 if (plugin == null) {
