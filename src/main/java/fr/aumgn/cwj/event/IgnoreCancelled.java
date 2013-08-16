@@ -7,9 +7,5 @@ import java.lang.annotation.Target;
 
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface EventHandler {
-
-    EventPhase phase() default EventPhase.HANDLE;
-
-    EventOrder order() default EventOrder.DEFAULT;
+public @interface IgnoreCancelled {
 }
