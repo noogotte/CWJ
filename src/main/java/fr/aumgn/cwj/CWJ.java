@@ -41,19 +41,29 @@ public class CWJ {
             bootstrap.childOption(ChannelOption.SO_KEEPALIVE, true);
 
             logger.info("Base folder : \"" + server.getFolder().toAbsolutePath() + "\"");
-            server.loadPlugins();
+            server.getPluginManager().load();
+            server.getPluginManager().enableAll();
 
             logger.info("Starting server on port " + server.getPort());
             ChannelFuture channelFuture = bootstrap.bind(server.getPort()).sync();
             channelFuture.channel().closeFuture().sync();
         }
         finally {
-            workerGroup.shutdownGracefully();
-            bossGroup.shutdownGracefully();
+            shutdown(workerGroup, bossGroup);
         }
+    }
+
+    private static void shutdown(EventLoopGroup workerGroup, EventLoopGroup bossGroup) {
+        server.getPluginManager().disableAll();
+        workerGroup.shutdownGracefully();
+        bossGroup.shutdownGracefully();
     }
 
     public static Logger getLogger() {
         return logger;
+    }
+
+    public static Server getServer() {
+        return server;
     }
 }

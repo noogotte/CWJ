@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ServiceLoader;
 import java.util.logging.Level;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
 import fr.aumgn.cwj.CWJ;
@@ -16,6 +17,7 @@ public class PluginManager {
 
     private final Path               folder;
     private final List<PluginLoader> pluginLoaders;
+    private List<Plugin>             plugins;
 
     public PluginManager(Path serverFolder) {
         this.folder = serverFolder.resolve("plugins");
@@ -44,7 +46,7 @@ public class PluginManager {
             return;
         }
 
-        List<Plugin> plugins = Lists.newArrayList();
+        ImmutableList.Builder<Plugin> pluginsBuilder = ImmutableList.builder();
         for (Path path : pluginPaths) {
             if (path.getFileName().toString().startsWith(".")) {
                 continue;
@@ -56,7 +58,7 @@ public class PluginManager {
                     CWJ.getLogger().warning("Unable to find suitable plugin loader for file " + path.getFileName());
                 }
                 else {
-                    plugins.add(plugin);
+                    pluginsBuilder.add(plugin);
                     CWJ.getLogger().info("Plugin " + pluginName(plugin) + " loaded.");
                 }
             }
@@ -65,6 +67,7 @@ public class PluginManager {
             }
         }
 
+        this.plugins = pluginsBuilder.build();
         CWJ.getLogger().info(plugins.size() + " plugins loaded");
     }
 
@@ -82,5 +85,18 @@ public class PluginManager {
     private String pluginName(Plugin plugin) {
         PluginDescriptor descriptor = plugin.getDescriptor();
         return descriptor.getName() + " v" + descriptor.getVersion();
+    }
+
+    public void enableAll() {
+        for (Plugin plugin : plugins) {
+            plugin.enable();
+        }
+
+    }
+
+    public void disableAll() {
+        for (Plugin plugin : plugins) {
+            plugin.disable();
+        }
     }
 }

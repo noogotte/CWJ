@@ -8,6 +8,8 @@ import java.util.SortedSet;
 
 import com.google.common.collect.Sets;
 
+import fr.aumgn.cwj.event.EventManager;
+import fr.aumgn.cwj.event.player.PlayerLoginEvent;
 import fr.aumgn.cwj.plugin.PluginManager;
 import fr.aumgn.cwj.protocol.Client;
 import fr.aumgn.cwj.protocol.ProtocolHandler;
@@ -27,6 +29,7 @@ public final class Server implements ProtocolHandler {
     private final int             port;
     private final int             seed;
     private final PluginManager   pluginManager;
+    private final EventManager    eventManager;
     private final SortedSet<Long> playerIds;
 
     /**
@@ -36,6 +39,7 @@ public final class Server implements ProtocolHandler {
         this.port = 12345;
         this.seed = 17;
         this.pluginManager = new PluginManager(this.getFolder());
+        this.eventManager = new EventManager();
         this.playerIds = Sets.newTreeSet();
         for (long id = 1; id < 10; id++) {
             playerIds.add(id);
@@ -60,8 +64,12 @@ public final class Server implements ProtocolHandler {
         return seed;
     }
 
-    void loadPlugins() {
-        pluginManager.load();
+    public PluginManager getPluginManager() {
+        return pluginManager;
+    }
+
+    public EventManager getEventManager() {
+        return eventManager;
     }
 
     @Override
@@ -88,10 +96,20 @@ public final class Server implements ProtocolHandler {
 
         long playerId = popPlayerId();
         Player client = new Player(context, playerId);
+
+        PlayerLoginEvent event = new PlayerLoginEvent(client);
+        eventManager.firePreProcess(event);
+        if (event.getResult() != PlayerLoginEvent.Result.ALLOWED) {
+            disconnect(client);
+        }
+
         CWJ.getLogger().info(
                 "Client Version " + versionPacket.getVersion() + " connected with entity id " + client.getEntityId()
                         + " and ip " + client.getIpAddress());
         client.sendPacket(new JoinPacket(client), new SeedPacket(seed), new ChatPacket("Welcome !"));
+
+        eventManager.firePostProcess(event);
+
         return client;
     }
 

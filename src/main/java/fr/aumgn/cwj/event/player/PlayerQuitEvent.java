@@ -3,11 +3,11 @@ package fr.aumgn.cwj.event.player;
 import fr.aumgn.cwj.Player;
 import fr.aumgn.cwj.event.EventSupport;
 
-public class PlayerQuitEvent extends AbstractPlayerEvent {
+public class PlayerQuitEvent extends AbstractPlayerEvent<PlayerLoginEvent> {
 
-    private static final EventSupport support = new EventSupport();
+    private static final EventSupport<PlayerLoginEvent> eventSupport = new EventSupport<PlayerLoginEvent>();
 
-    private String                    quitMessage;
+    private String                                      quitMessage;
 
     public PlayerQuitEvent(final Player player, final String quitMessage) {
         super(player);
@@ -15,8 +15,8 @@ public class PlayerQuitEvent extends AbstractPlayerEvent {
     }
 
     @Override
-    public EventSupport getEventSupport() {
-        return support;
+    public EventSupport<PlayerLoginEvent> getEventSupport() {
+        return eventSupport;
     }
 
     public String getQuitMessage() {

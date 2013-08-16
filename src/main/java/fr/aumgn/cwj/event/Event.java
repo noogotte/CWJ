@@ -1,6 +1,6 @@
 package fr.aumgn.cwj.event;
 
-public abstract class Event {
+public abstract class Event<E extends Event<E>> {
 
     /**
      * Returns the {@link EventSupport} for this Event.
@@ -8,7 +8,7 @@ public abstract class Event {
      * Implementing this method means that the Event is actually meant to be
      * listened to.
      */
-    public abstract EventSupport getEventSupport();
+    public abstract EventSupport<E> getEventSupport();
 
     /**
      * This is called before {@link EventPhase.MONITOR} and

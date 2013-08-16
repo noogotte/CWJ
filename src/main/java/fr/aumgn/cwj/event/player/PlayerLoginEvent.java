@@ -3,11 +3,11 @@ package fr.aumgn.cwj.event.player;
 import fr.aumgn.cwj.Player;
 import fr.aumgn.cwj.event.EventSupport;
 
-public class PlayerLoginEvent extends AbstractPlayerEvent {
+public class PlayerLoginEvent extends AbstractPlayerEvent<PlayerLoginEvent> {
 
-    private static final EventSupport support = new EventSupport();
+    private static final EventSupport<PlayerLoginEvent> eventSupport = new EventSupport<PlayerLoginEvent>();
 
-    private Result                    result;
+    private Result                                      result;
 
     public PlayerLoginEvent(final Player player) {
         super(player);
@@ -15,8 +15,8 @@ public class PlayerLoginEvent extends AbstractPlayerEvent {
     }
 
     @Override
-    public EventSupport getEventSupport() {
-        return support;
+    public EventSupport<PlayerLoginEvent> getEventSupport() {
+        return eventSupport;
     }
 
     public Result getResult() {

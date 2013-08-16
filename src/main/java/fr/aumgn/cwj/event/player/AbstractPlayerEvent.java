@@ -3,7 +3,7 @@ package fr.aumgn.cwj.event.player;
 import fr.aumgn.cwj.Player;
 import fr.aumgn.cwj.event.Event;
 
-public abstract class AbstractPlayerEvent extends Event implements PlayerEvent {
+public abstract class AbstractPlayerEvent<E extends AbstractPlayerEvent<E>> extends Event<E> implements PlayerEvent {
 
     protected final Player player;
 
@@ -11,6 +11,7 @@ public abstract class AbstractPlayerEvent extends Event implements PlayerEvent {
         this.player = player;
     }
 
+    @Override
     public final Player getPlayer() {
         return player;
     }
