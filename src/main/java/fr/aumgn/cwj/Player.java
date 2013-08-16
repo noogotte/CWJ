@@ -33,7 +33,7 @@ public class Player implements Client {
     }
 
     @Override
-    public InetSocketAddress getAdress() {
+    public InetSocketAddress getIpAddress() {
         if (context.channel().remoteAddress() instanceof InetSocketAddress) {
             return (InetSocketAddress) context.channel().remoteAddress();
         }

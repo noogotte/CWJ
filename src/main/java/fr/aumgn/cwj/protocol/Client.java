@@ -8,7 +8,7 @@ public interface Client {
 
     long getEntityId();
 
-    InetSocketAddress getAdress();
+    InetSocketAddress getIpAddress();
 
     void sendPacket(ServerPacket... packets);
 }

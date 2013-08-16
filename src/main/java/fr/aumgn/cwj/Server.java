@@ -90,7 +90,7 @@ public final class Server implements ProtocolHandler {
         Player client = new Player(context, playerId);
         CWJ.getLogger().info(
                 "Client Version " + versionPacket.getVersion() + " connected with entity id " + client.getEntityId()
-                        + " and ip " + client.getAdress().toString());
+                        + " and ip " + client.getIpAddress());
         client.sendPacket(new JoinPacket(client), new SeedPacket(seed), new ChatPacket("Welcome !"));
         return client;
     }
